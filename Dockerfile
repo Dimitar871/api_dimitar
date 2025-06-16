@@ -1,22 +1,24 @@
 FROM php:8.2-cli
 
-# Install system dependencies
+# Install required PHP extensions and system dependencies
 RUN apt-get update && apt-get install -y \
-    git unzip zip curl libzip-dev \
+    unzip curl git zip libzip-dev \
     && docker-php-ext-install zip
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
+# Set the working directory
 WORKDIR /var/www/html
 
-# Copy all project files
+# Copy project files
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-interaction --no-dev --optimize-autoloader
+# Install Laravel dependencies
+RUN composer install --no-interaction --optimize-autoloader
 
-# Expose port and set command
+# Expose the port Laravel will run on
 EXPOSE 10000
+
+# Start Laravel
 CMD php artisan serve --host=0.0.0.0 --port=10000
