@@ -18,7 +18,8 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    'driver' => env('SESSION_DRIVER', 'file') === 'null' ? 'file' : env('SESSION_DRIVER', 'file'),
+
 
     /*
     |--------------------------------------------------------------------------
