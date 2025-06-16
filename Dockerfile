@@ -17,12 +17,13 @@ COPY . .
 # Install Laravel dependencies
 RUN composer install --no-interaction --optimize-autoloader
 
-# Clear cached config, routes, views (important!)
+# Clear Laravel config and view caches
 RUN php artisan config:clear && \
-    php artisan cache:clear && \
     php artisan route:clear && \
     php artisan view:clear
 
-# Expose port and start Laravel
+# Expose the port Laravel will run on
 EXPOSE 10000
+
+# Start the Laravel development server
 CMD php artisan serve --host=0.0.0.0 --port=10000
